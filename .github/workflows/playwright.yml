@@ -20,3 +20,9 @@ jobs:
       run: mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install --with-deps"
     - name: Run tests
       run: mvn test -Dtest="org.example.JUnit"
+    - name: Upload Playwright Artifacts
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: playwright-traces
+        path: target/playwright-traces/

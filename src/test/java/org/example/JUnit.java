@@ -5,10 +5,14 @@ import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
+import com.microsoft.playwright.Tracing;
+
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.nio.file.Paths;
 
 public class JUnit {
 
@@ -23,7 +27,7 @@ public class JUnit {
   @BeforeAll
   static void launchBrowser() {
     playwright = Playwright.create();
-    browser = playwright.chromium().launch();
+    browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
   }
 
   @AfterAll
@@ -35,10 +39,19 @@ public class JUnit {
   void createContextAndPage() {
     context = browser.newContext();
     page = context.newPage();
+
+    // Start tracing before creating / navigating a page.
+            context.tracing().start(new Tracing.StartOptions()
+            .setScreenshots(true)
+            .setSnapshots(true)
+            .setSources(true));
   }
 
   @AfterEach
   void closeContext() {
+    // Stop tracing and export it into a zip archive.
+            context.tracing().stop(new Tracing.StopOptions()
+            .setPath(Paths.get("target/playwright-traces/trace.zip")));
     context.close();
   }
 
