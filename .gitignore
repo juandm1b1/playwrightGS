@@ -1,0 +1,8 @@
+/target/
+/.settings/
+/.classpath
+/.project
+.DS_Store
+# Evita subir los navegadores descargados por Playwright si están en el proyecto
+test-results/
+playwright-report/
