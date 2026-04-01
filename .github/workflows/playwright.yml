@@ -25,4 +25,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: playwright-traces
-        path: target/surefire-reports/
+        path: target/trace.zip
