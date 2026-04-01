@@ -51,7 +51,7 @@ public class JUnit {
   void closeContext() {
     // Stop tracing and export it into a zip archive.
             context.tracing().stop(new Tracing.StopOptions()
-            .setPath(Paths.get("target/playwright-traces/trace.zip")));
+            .setPath(Paths.get("target/surefire-reports/trace.zip")));
     context.close();
   }
 
