@@ -27,7 +27,7 @@ public class JUnit {
   @BeforeAll
   static void launchBrowser() {
     playwright = Playwright.create();
-    browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+    browser = playwright.chromium().launch();
   }
 
   @AfterAll
@@ -48,10 +48,10 @@ public class JUnit {
   }
 
   @AfterEach
-  void closeContext() {
+  void closeContext(TestInfo testInfo) {
     // Stop tracing and export it into a zip archive.
-            context.tracing().stop(new Tracing.StopOptions()
-            .setPath(Paths.get("target/playwright-traces/trace.zip")));
+    String traceName = "target/playwright-traces/trace-" + testInfo.getDisplayName() + ".zip";    
+    context.tracing().stop(new Tracing.StopOptions().setPath(Paths.get(traceName)));
     context.close();
   }
 
